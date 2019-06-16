@@ -4,6 +4,11 @@ The goal is like the name, to have a library containing extensions open for ever
 1. Make extensions for everything C# to make our life easier from WPF, UWP to Android and IOS
 2. Everything from classes to extension methods, we should try and keep most of the classes separated from each other and when possible to provide interfaces for anyone to build their own implementation if necessary.
 
+
+Nuget Package:
+
+[![NuGet Package Icon](https://img.shields.io/nuget/v/OpenExtensions.svg)](https://www.nuget.org/packages/OpenExtensions)
+
 ***Things to start with***
 1. Tests need to be made, i am not really familiar with testing in a library any knowledge and guidance is appreciated.
 2. Samples need to be made too.
