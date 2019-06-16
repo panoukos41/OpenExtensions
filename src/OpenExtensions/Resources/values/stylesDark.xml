@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <color name="Dark_background">#303030</color>
+  <color name="colorAccentDark">#2F59C2</color>
+
+  <style name="DarkTheme" parent="Theme.AppCompat">
+    <!--Customize Theme-->
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorAccent">@color/colorAccentDark</item>
+    
+    <item name="tabBackgroundColor">@color/Dark_background</item>
+
+    <!--SupportActionBar-->
+    <item name="windowNoTitle">true</item>
+    <item name="windowActionBar">false</item>
+
+    <item name="android:navigationBarColor">@color/Dark_background</item>
+  </style>
+
+  <style name="DarkTheme.FullScreen.Dialog" parent="Theme.AppCompat.Dialog">
+    <!--Customize Theme-->
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorAccent">@color/colorAccentDark</item>
+
+    <item name="tabBackgroundColor">@color/Dark_background</item>
+
+    <!--SupportActionBar-->
+    <item name="android:windowNoTitle">true</item>
+    <item name="windowActionBar">false</item>
+    <item name="android:windowBackground">@color/Dark_background</item>
+    <item name="android:navigationBarColor">@color/Dark_background</item>
+
+    <!-- Set this to true if you want Full Screen without status bar -->
+    <item name="android:windowFullscreen">false</item>
+    <item name="android:windowIsFloating">false</item>"
+
+    <!-- Additionally if you want animations when dialog opening -->
+    <item name="android:windowEnterAnimation">@anim/enter_from_right</item>
+    <item name="android:windowExitAnimation">@anim/exit_to_right</item>
+  </style>
+</resources>
