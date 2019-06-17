@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.4;uap10.0.14393;MonoAndroid80;MonoAndroid81;MonoAndroid90</TargetFrameworks>
+    <TargetFrameworks>netstandard1.4;netstandard2.0;uap10.0.14393;MonoAndroid80;MonoAndroid81;MonoAndroid90</TargetFrameworks>
 
     <!--Assembly and Namespace info -->
     <AssemblyName>OpenExtensions</AssemblyName>
@@ -11,7 +11,7 @@
     <Product>OpenExtensions</Product>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
-    <Version>0.2.18.0-alpha</Version>
+    <Version>0.2.19.0-alpha</Version>
     <PackageVersion>$(Version)</PackageVersion>
     <NeutralLanguage>en</NeutralLanguage>
     
@@ -63,9 +63,13 @@
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <!--Ignore certain files from explorer-->
-    <None Include="**\*.cs;**\*.xml;**\*.axml;**\*.png" Exclude="obj\**\*.*;bin\**\*.*;bin;obj" />
+    <None Include="**\*.cs;**\*.xml;**\*.axml;**\*.png;" Exclude="obj\**\*.*;bin\**\*.*;bin;obj" />
     <Compile Include="**\*.shared.cs" />
     <Compile Include="**\*.shared.*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard'))">
+    
   </ItemGroup>
 
   <!--Compile everything that is Android-->

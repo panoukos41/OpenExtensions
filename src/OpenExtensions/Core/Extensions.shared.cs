@@ -1,8 +1,8 @@
-﻿using OpenExtensions.Collections;
+﻿using OpenExtensions.Core.Collections;
 using System;
 using System.Collections.Generic;
 
-namespace OpenExtensions
+namespace OpenExtensions.Core
 {
     /// <summary>
     /// Extension methods.

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace OpenExtensions.Commands
+namespace OpenExtensions.Core.Commands
 {
     /// <summary>
     /// An <see cref="ICommand"/> to use with async

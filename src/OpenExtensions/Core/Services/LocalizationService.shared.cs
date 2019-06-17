@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace OpenExtensions.Services
+namespace OpenExtensions.Core.Services
 {
     /// <summary>
     /// A service to change language faster and see current language info.

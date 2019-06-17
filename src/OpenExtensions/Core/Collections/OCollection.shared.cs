@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 
-namespace OpenExtensions.Collections
+namespace OpenExtensions.Core.Collections
 {
     /// <summary>
     /// An <see cref="ObservableCollection{T}"/> with some extra methods.
