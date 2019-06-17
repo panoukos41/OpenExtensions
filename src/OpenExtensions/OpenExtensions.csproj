@@ -11,7 +11,7 @@
     <Product>OpenExtensions</Product>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
-    <Version>0.2.19.0-alpha</Version>
+    <Version>0.2.20.0-alpha</Version>
     <PackageVersion>$(Version)</PackageVersion>
     <NeutralLanguage>en</NeutralLanguage>
     
