@@ -20,6 +20,6 @@ namespace OpenExtensions.Droid.Adapters
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        ICharSequence GetPageTitle(int index);
+        string GetPageTitle(int index);
     }
 }

@@ -15,7 +15,7 @@ namespace OpenExtensions.Droid.Adapters
         public override int Count => _Count;
         private readonly int _Count;
         private Func<int,Fragment> getItem { get; set; }
-        private Func<int, ICharSequence> getPageTitle { get; set; }        
+        private Func<int, string> getPageTitle { get; set; }        
 
         /// <summary>
         /// Create a pager adapter that hosts a fixed number of fragments.
@@ -24,7 +24,7 @@ namespace OpenExtensions.Droid.Adapters
         /// <param name="count">The number of fragments that the adapter will host.</param>
         /// <param name="GetItem">The method that returns a fragment for a given position.</param>
         /// <param name="GetTitle">The method that returns a title for a given position.</param>
-        public FragmentPagerAdapterEx(FragmentManager fm, int count, Func<int,Fragment> GetItem, Func<int, ICharSequence> GetTitle) : base(fm)
+        public FragmentPagerAdapterEx(FragmentManager fm, int count, Func<int,Fragment> GetItem, Func<int, string> GetTitle) : base(fm)
         {
             _Count = count;
             getItem = GetItem;
@@ -51,10 +51,10 @@ namespace OpenExtensions.Droid.Adapters
 
         /// <summary>
         /// </summary>
-        public override ICharSequence GetPageTitleFormatted(int position) => getPageTitle(position);
+        public override ICharSequence GetPageTitleFormatted(int position) => new Java.Lang.String(getPageTitle(position));
 
         Fragment IFragmentPagerAdapterEx.GetPage(int index) => GetItem(index);
 
-        ICharSequence IFragmentPagerAdapterEx.GetPageTitle(int index) => GetPageTitleFormatted(index);
+        string IFragmentPagerAdapterEx.GetPageTitle(int index) => GetPageTitleFormatted(index).ToString();
     }
 }
