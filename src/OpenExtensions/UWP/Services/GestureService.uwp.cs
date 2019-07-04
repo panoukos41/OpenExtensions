@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using OpenExtensions.Core.Services;
+using System;
 using Windows.Devices.Input;
 using Windows.Foundation.Metadata;
 using Windows.Phone.UI.Input;
@@ -25,7 +25,7 @@ namespace OpenExtensions.UWP.Services
         /// Initialize a new instance of the <see cref="GestureService"/>
         /// </summary>
         public GestureService()
-        {           
+        {
             IsHardwareBackButtonPresent = ApiInformation.IsEventPresent("Windows.Phone.UI.Input.HardwareButtons", "BackPressed");
             IsHardwareCameraButtonPresent = ApiInformation.IsEventPresent("Windows.Phone.UI.Input.HardwareButtons", "CameraPressed");
 
@@ -48,7 +48,7 @@ namespace OpenExtensions.UWP.Services
             if (IsMousePresent)
                 MouseDevice.GetForCurrentView().MouseMoved += OnMouseMoved;
 
-            SystemNavigationManager.GetForCurrentView().BackRequested += OnSystemNavigationManagerBackRequested;            
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnSystemNavigationManagerBackRequested;
             Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += OnAcceleratorKeyActivated;
             Window.Current.CoreWindow.PointerPressed += OnPointerPressed;
         }
@@ -79,66 +79,13 @@ namespace OpenExtensions.UWP.Services
         }
 
         /// <summary>
-        /// Invokes the handlers attached to an eventhandler.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="eventHandler">The EventHandler</param>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        protected void RaiseEvent<T>(EventHandler<T> eventHandler, object sender, T args)
-        {
-            EventHandler<T> handler = eventHandler;
-
-            if (handler != null)
-                foreach (EventHandler<T> del in handler.GetInvocationList())
-                {
-                    try
-                    {
-                        del(sender, args);
-                    }
-                    catch { } // Events should be fire and forget, subscriber fail should not affect publishing process
-                }
-        }
-
-        /// <summary>
-        /// Invokes the handlers attached to an eventhandler in reverse order and stops if a handler has canceled the event.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="eventHandler">The EventHandler</param>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        protected void RaiseCancelableEvent<T>(EventHandler<T> eventHandler, object sender, T args) where T : CancelEventArgs
-        {
-            EventHandler<T> handler = eventHandler;
-
-            if (handler != null)
-            {
-                Delegate[] invocationList = handler.GetInvocationList();
-
-                for (int i = invocationList.Length - 1; i >= 0; i--)
-                {
-                    EventHandler<T> del = (EventHandler<T>)invocationList[i];
-
-                    try
-                    {
-                        del(sender, args);
-
-                        if (args.Cancel)
-                            break;
-                    }
-                    catch { } // Events should be fire and forget, subscriber fail should not affect publishing process
-                }
-            }
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         protected virtual void OnMouseMoved(MouseDevice sender, MouseEventArgs args)
         {
-            RaiseEvent(MouseMoved, this, args);
+            Core.Extensions.RaiseEvent(MouseMoved, this, args);
         }
 
         /// <summary>
@@ -148,9 +95,29 @@ namespace OpenExtensions.UWP.Services
         /// <param name="e"></param>
         protected virtual void OnSystemNavigationManagerBackRequested(object sender, BackRequestedEventArgs e)
         {
+            e.Handled = RaiseGoBackRequested();
+        }
+
+        /// <summary>
+        /// Raise <see cref="GoBackRequested"/>
+        /// </summary>
+        /// <returns>true if handled false otherwise</returns>
+        public bool RaiseGoBackRequested()
+        {
             var args = new GestureEventArgs();
-            RaiseCancelableEvent(GoBackRequested, this, args);
-            e.Handled = args.Handled;
+            Core.Extensions.RaiseCancelableEvent(GoBackRequested, this, args);
+            return args.Handled;
+        }
+
+        /// <summary>
+        /// Raise <see cref="GoForwardRequested"/>
+        /// </summary>
+        /// <returns>true if handled false otherwise</returns>
+        public bool RaiseGoForwardRequested()
+        {
+            var args = new GestureEventArgs();
+            Core.Extensions.RaiseCancelableEvent(GoForwardRequested, this, args);
+            return args.Handled;
         }
 
 #if WINDOWS_PHONE_APP
@@ -202,10 +169,10 @@ namespace OpenExtensions.UWP.Services
                 args.Handled = true;
 
                 if (backPressed)
-                    RaiseCancelableEvent(GoBackRequested, this, new GestureEventArgs());
+                    RaiseGoBackRequested();
 
                 if (forwardPressed)
-                    RaiseCancelableEvent(GoForwardRequested, this, new GestureEventArgs());
+                    RaiseGoForwardRequested();
             }
         }
 
@@ -216,7 +183,7 @@ namespace OpenExtensions.UWP.Services
         /// <param name="e"></param>
         protected virtual void OnHardwareButtonCameraHalfPressed(object sender, CameraEventArgs e)
         {
-            RaiseEvent(CameraButtonHalfPressed, this, new GestureEventArgs(false, true));
+            Core.Extensions.RaiseEvent(CameraButtonHalfPressed, this, new GestureEventArgs(false, true));
         }
 
         /// <summary>
@@ -226,7 +193,7 @@ namespace OpenExtensions.UWP.Services
         /// <param name="e"></param>
         protected virtual void OnHardwareButtonCameraPressed(object sender, CameraEventArgs e)
         {
-            RaiseEvent(CameraButtonPressed, this, new GestureEventArgs(false, true));
+            Core.Extensions.RaiseEvent(CameraButtonPressed, this, new GestureEventArgs(false, true));
         }
 
         /// <summary>
@@ -236,7 +203,7 @@ namespace OpenExtensions.UWP.Services
         /// <param name="e"></param>
         protected virtual void OnHardwareButtonCameraReleased(object sender, CameraEventArgs e)
         {
-            RaiseEvent(CameraButtonReleased, this, new GestureEventArgs(false, true));
+            Core.Extensions.RaiseEvent(CameraButtonReleased, this, new GestureEventArgs(false, true));
         }
     }
 }
