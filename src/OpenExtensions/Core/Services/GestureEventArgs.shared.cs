@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 
-namespace OpenExtensions.UWP.Services
+namespace OpenExtensions.Core.Services
 {
     /// <summary>
-    /// Event arguments for the <see cref="GestureService"/>
+    /// Event arguments for the <see cref="IGestureService"/>
     /// </summary>
     public class GestureEventArgs : CancelEventArgs
     {
@@ -25,6 +25,7 @@ namespace OpenExtensions.UWP.Services
         /// 
         /// </summary>
         /// <param name="handled"></param>
+        /// <param name="isHardwareButton"></param>
         public GestureEventArgs(bool handled, bool isHardwareButton)
         {
             Handled = handled;
