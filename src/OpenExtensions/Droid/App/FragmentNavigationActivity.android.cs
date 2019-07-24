@@ -163,7 +163,7 @@ namespace OpenExtensions.Droid.App
         /// if the <see cref="NavigationService"/> can go back it will navigate back
         /// else the app will be finished through the Finish() method.
         /// </summary>
-        public sealed override void OnBackPressed()
+        public override void OnBackPressed()
         {
             if (GestureService.RaiseGoBackRequested())
                 return;

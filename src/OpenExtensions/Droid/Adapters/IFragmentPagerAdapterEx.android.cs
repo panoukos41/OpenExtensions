@@ -1,5 +1,4 @@
 ﻿using Android.Support.V4.App;
-using Java.Lang;
 
 namespace OpenExtensions.Droid.Adapters
 {
