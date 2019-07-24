@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace OpenExtensions.Commands
+namespace OpenExtensions.Core.Commands
 {
     /// <summary>
     /// A Generic <see cref="ICommand"/> to use with async

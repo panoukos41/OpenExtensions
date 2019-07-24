@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace OpenExtensions.Commands
+namespace OpenExtensions.Core.Commands
 {
     /// <summary>
     /// 

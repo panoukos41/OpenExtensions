@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 
-namespace OpenExtensions.Services
+namespace OpenExtensions.Core.Services
 {
     /// <summary>
-    /// A service to change language faster and see current language info.
+    /// A service to change culture faster and see current culture info.
     /// </summary>
-    public static class LocalizationService
+    public static partial class LocalizationService
     {
         /// <summary>
         /// Get the current culture object.
@@ -20,11 +20,6 @@ namespace OpenExtensions.Services
         /// <summary>
         /// Change language passing the two or four letter name of the language.
         /// </summary>
-        public static void SetLanguage(string culture)
-        {
-            var cult = new CultureInfo(culture);
-            CultureInfo.DefaultThreadCurrentCulture = cult;
-            CultureInfo.DefaultThreadCurrentUICulture = cult;
-        }
+        public static void SetCulture(string cultureCode) => SetPlatformCulture(cultureCode);
     }
 }

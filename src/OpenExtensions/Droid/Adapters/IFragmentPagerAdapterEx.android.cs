@@ -1,5 +1,4 @@
 ﻿using Android.Support.V4.App;
-using Java.Lang;
 
 namespace OpenExtensions.Droid.Adapters
 {
@@ -20,6 +19,6 @@ namespace OpenExtensions.Droid.Adapters
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        ICharSequence GetPageTitle(int index);
+        string GetPageTitle(int index);
     }
 }

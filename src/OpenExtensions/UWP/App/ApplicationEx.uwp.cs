@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Views;
+using OpenExtensions.Core.Services;
 using OpenExtensions.UWP.Navigation;
 using OpenExtensions.UWP.Services;
 using System;
@@ -67,7 +68,7 @@ namespace OpenExtensions.UWP.App
         public bool IsSuspending { get; private set; }
 
         /// <summary>
-        /// Ovveride with logic as to what happens when <see cref="GestureService.GoForwardRequested"/> is fired,
+        /// Ovveride with logic as to what happens when <see cref="IGestureService.GoForwardRequested"/> is fired,
         /// by default it will call <see cref="Frame.GoForward()"/> if its possible.
         /// </summary>
         protected virtual void OnGoForwardRequested(object sender, GestureEventArgs e)
@@ -80,7 +81,7 @@ namespace OpenExtensions.UWP.App
         }
 
         /// <summary>
-        /// Ovveride with logic as to what happens when <see cref="GestureService.GoBackRequested"/> is fired,
+        /// Ovveride with logic as to what happens when <see cref="IGestureService.GoBackRequested"/> is fired,
         /// by default it will call <see cref="Frame.GoBack()"/> if its possible.
         /// </summary>
         protected virtual void OnGoBackRequested(object sender, GestureEventArgs e)

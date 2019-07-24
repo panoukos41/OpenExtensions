@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace OpenExtensions.Services
+namespace OpenExtensions.Core.Services
 {
     /// <summary>
     /// A wrapper class around the <see cref="Newtonsoft.Json"/> methods.

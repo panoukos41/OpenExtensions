@@ -2,7 +2,7 @@
 using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
-using OpenExtensions.Services;
+using OpenExtensions.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -141,7 +141,7 @@ namespace OpenExtensions.Droid.FragmentNavigation
             if (!CanGoback())
                 return;
 
-            var a = backStack.Pop();
+            backStack.Pop();
 
             var frag = backStack.Peek();
             RaiseNavigated(new NavigationEventArgs(frag.GetType(), frag.Nav_parameter));

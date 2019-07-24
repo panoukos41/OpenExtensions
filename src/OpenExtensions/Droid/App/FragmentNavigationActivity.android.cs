@@ -5,7 +5,10 @@ using Android.OS;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
+using GalaSoft.MvvmLight.Views;
+using OpenExtensions.Core.Services;
 using OpenExtensions.Droid.FragmentNavigation;
+using OpenExtensions.Droid.Services;
 using System.Threading.Tasks;
 using Fragment = Android.Support.V4.App.Fragment;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
@@ -19,8 +22,6 @@ namespace OpenExtensions.Droid.App
     [Activity(ConfigurationChanges = ConfigChanges.Orientation)]
     public abstract class FragmentNavigationActivity : AppCompatActivity
     {
-        #region Properties/Controls
-
         /// <summary>
         /// Your Toolbar
         /// </summary>
@@ -47,9 +48,13 @@ namespace OpenExtensions.Droid.App
         /// </summary>
         public IFragmentNavigationService NavigationService => fragment as IFragmentNavigationService;
 
+        /// <summary>
+        /// Default GestureService. Use <see cref="OnCreateGestureService"/> to inject your own.
+        /// </summary>
+        public IGestureService GestureService { get; private set; }
+
         private Fragment fragment;
         private const string NAVIGATIONSERVICE_TAG = "fragment navigation service";
-        #endregion
 
         /// <summary>
         /// 
@@ -61,16 +66,15 @@ namespace OpenExtensions.Droid.App
             base.OnCreate(savedInstanceState);
             SetContentView(ShellLayout);
 
-            await OnInitializeAsync();
+            await OnInitializeAsync();            
             CreateNavigationService();
+            CreateGestureService();
             OnCreateToolbar(Toolbar);
             OnCreateDrawerForToolbar(Toolbar, Drawer);
 
             await OnLaunchAsync(savedInstanceState);
             SetNavigationService();
         }
-
-        #region virtual Methods
 
         /// <summary>
         /// Last call before the activity begins.
@@ -144,9 +148,15 @@ namespace OpenExtensions.Droid.App
         {
             return null;
         }
-        #endregion
 
-        #region ovverides
+        /// <summary>
+        /// Creates the GestureService, ovveride to provide your own.
+        /// </summary>
+        /// <returns></returns>
+        public virtual IGestureService OnCreateGestureService()
+        {
+            return new GestureService();
+        }
 
         /// <summary>
         /// Called when back navigation is requested, if the <see cref="Drawer"/> is open it will be closed,
@@ -155,18 +165,9 @@ namespace OpenExtensions.Droid.App
         /// </summary>
         public override void OnBackPressed()
         {
-            if (Drawer != null && (Drawer.IsDrawerOpen(GravityCompat.Start) || Drawer.IsDrawerOpen(GravityCompat.End)))
-            {
-                Drawer.CloseDrawers();
-            }
-            else if (NavigationService != null && NavigationService.CanGoback())
-            {
-                NavigationService.GoBack();
-            }
-            else
-            {
-                Finish();
-            }
+            if (GestureService.RaiseGoBackRequested())
+                return;
+            Finish();
         }
 
         /// <summary>
@@ -185,9 +186,45 @@ namespace OpenExtensions.Droid.App
                 .CommitNow();
             }
         }
-        #endregion
 
-        #region Private Methods
+        private void CreateGestureService()
+        {
+            GestureService = OnCreateGestureService();
+            GestureService.GoBackRequested += OnGoBackRequested;
+            GestureService.GoForwardRequested += OnGoForwardRequested;
+        }
+
+        /// <summary>
+        /// Ovveride with logic as to what happens when <see cref="IGestureService.GoForwardRequested"/> is fired.
+        /// </summary>
+        protected virtual void OnGoForwardRequested(object sender, GestureEventArgs e)
+        {
+            
+        }
+
+        /// <summary>
+        /// Ovveride with logic as to what happens when <see cref="IGestureService.GoBackRequested"/> is fired,
+        /// by default it will try to close all drawers if they are closed then it will
+        /// call <see cref="INavigationService.GoBack()"/> if its possible.
+        /// </summary>
+        protected virtual void OnGoBackRequested(object sender, GestureEventArgs e)
+        {
+            if (e.Handled)
+                return;
+
+            if (Drawer != null && (Drawer.IsDrawerOpen(GravityCompat.Start) || Drawer.IsDrawerOpen(GravityCompat.End)))
+            {
+                Drawer.CloseDrawers();
+                e.Handled = true;
+            }
+            else if (NavigationService != null && NavigationService.CanGoback())
+            {
+                NavigationService.GoBack();
+                e.Handled = true;
+            }
+            else
+                e.Handled = false;
+        }
 
         private void CreateNavigationService()
         {
@@ -208,6 +245,5 @@ namespace OpenExtensions.Droid.App
                 .Replace(NavigationServiceFrame, fragment, NAVIGATIONSERVICE_TAG)
                 .CommitNow();
         }
-        #endregion
     }
 }
