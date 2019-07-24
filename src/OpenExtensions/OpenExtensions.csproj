@@ -11,7 +11,7 @@
     <Product>OpenExtensions</Product>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
-    <Version>0.2.20.0-alpha</Version>
+    <Version>0.3.0.0-alpha</Version>
     <PackageVersion>$(Version)</PackageVersion>
     <NeutralLanguage>en</NeutralLanguage>
     
@@ -68,8 +68,10 @@
     <Compile Include="**\*.shared.*.cs" />
   </ItemGroup>
 
+  <!--Compile anything for .netstandard-->
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard'))">
-    
+    <Compile Include="**\*.netstandard.cs" />
+    <Compile Include="**\*.netstandard.*.cs" />
   </ItemGroup>
 
   <!--Compile everything that is Android-->
@@ -88,4 +90,6 @@
     <Compile Include="**\*.uwp.cs" />
     <Compile Include="**\*.uwp.*.cs" />
   </ItemGroup>
+  
+  
 </Project>
