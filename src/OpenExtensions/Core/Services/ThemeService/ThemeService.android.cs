@@ -1,26 +1,24 @@
 ﻿using Android.Content;
-using OpenExtensions.Core.Services;
 using System.Threading.Tasks;
 
-namespace OpenExtensions.Droid.Services
+namespace OpenExtensions.Core.Services
 {
-    /// <summary>
-    /// A service to easily register one light and one dark theme to switch between them.
-    /// </summary>
-    public class ThemeService : IThemeService
+    public static partial class ThemeService
     {
-        private readonly ContextWrapper ContextWrapper;
-        private readonly int DarkTheme;
-        private readonly int LightTheme;
+        private static ContextWrapper ContextWrapper;
+        private static int DarkTheme;
+        private static int LightTheme;
         private const string KEY = "Theme";
 
         /// <summary>
-        /// Initialize a new instance of the ThemeService
+        /// Initialize the Android ThemeService for a specific Acitvity,
+        /// Since this is a static class if the activity changes Initialize
+        /// should be called again for that activity.
         /// </summary>
         /// <param name="contextWrapper">Your activity</param>
         /// <param name="darkTheme">Android Style Resource</param>
         /// <param name="lightTheme">Android Style Resource</param>
-        public ThemeService(ContextWrapper contextWrapper, int darkTheme, int lightTheme)
+        public static void Initialize(ContextWrapper contextWrapper, int darkTheme, int lightTheme)
         {
             (ContextWrapper, DarkTheme, LightTheme) = (contextWrapper, darkTheme, lightTheme);
             if (GetCurrentTheme() == ThemeType.Dark)
@@ -29,21 +27,13 @@ namespace OpenExtensions.Droid.Services
                 SetTheme(ThemeType.Light);
         }
 
-        /// <summary>
-        /// Get the current theme.
-        /// </summary>
-        /// <returns></returns>
-        public ThemeType GetCurrentTheme()
+        static ThemeType GetPlatformCurrentTheme()
         {
             var pref = ContextWrapper.GetSharedPreferences("com.openExtensions.android.Theme", FileCreationMode.Private);
             return (ThemeType)pref.GetInt(KEY, 1);
         }
 
-        /// <summary>
-        /// Set the choosen theme, for android Default will result in Light.
-        /// </summary>
-        /// <param name="theme"></param>
-        public Task SetTheme(ThemeType theme)
+        static Task SetPlatformTheme(ThemeType theme)
         {
             var pref = ContextWrapper.GetSharedPreferences("com.openExtensions.android.Theme", FileCreationMode.Private).Edit();
             if (theme == ThemeType.Dark)
