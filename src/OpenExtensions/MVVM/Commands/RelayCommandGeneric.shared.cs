@@ -1,13 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using OpenExtensions.MVVM.Interfaces;
+using System;
 using System.Windows.Input;
 
-namespace OpenExtensions.Core.Commands
+namespace OpenExtensions.MVVM.Commands
 {
     /// <summary>
     /// 
     /// </summary>
-    public class RelayCommandAsync<T> : IRelayCommandAsyncGeneric<T>
+    /// <typeparam name="T"></typeparam>
+    public class RelayCommand<T> : ICommandGeneric<T>
     {
         /// <summary>
         /// 
@@ -15,23 +16,24 @@ namespace OpenExtensions.Core.Commands
         public event EventHandler CanExecuteChanged;
 
         private bool _isExecuting;
-        private readonly Func<T, Task> _execute;
+        private readonly Action<T> _execute;
         private readonly Func<T, bool> _canExecute;
 
         /// <summary>
-        /// Initialize a new instance of <see cref="RelayCommandAsync{T}"/>
+        /// Initialize a new instance of <see cref="RelayCommand{T}"/>
         /// </summary>
         /// <param name="execute"></param>
         /// <param name="canExecute"></param>
-        public RelayCommandAsync(Func<T, Task> execute, Func<T, bool> canExecute = null)
+        public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
         }
 
         /// <summary>
-        /// Indicates if the task can execute.
+        /// 
         /// </summary>
+        /// <param name="parameter"></param>
         /// <returns></returns>
         public bool CanExecute(T parameter)
         {
@@ -39,27 +41,29 @@ namespace OpenExtensions.Core.Commands
         }
 
         /// <summary>
-        /// Executes the task if <see cref="CanExecute(T)"/> returns true.
+        /// 
         /// </summary>
-        /// <returns></returns>
-        public async Task ExecuteAsync(T parameter)
+        /// <param name="parameter"></param>
+        public void Execute(T parameter)
         {
             if (CanExecute(parameter))
             {
                 try
                 {
                     _isExecuting = true;
-                    await _execute(parameter);
+                    _execute?.Invoke(parameter);
                 }
                 finally
                 {
                     _isExecuting = false;
                 }
             }
-            RaiseCanExecuteChanged();
         }
 
-        private void RaiseCanExecuteChanged()
+        /// <summary>
+        /// 
+        /// </summary>
+        public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -69,9 +73,9 @@ namespace OpenExtensions.Core.Commands
             return CanExecute((T)parameter);
         }
 
-        async void ICommand.Execute(object parameter)
+        void ICommand.Execute(object parameter)
         {
-            await ExecuteAsync((T)parameter);
+            Execute((T)parameter);
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace OpenExtensions.Core.Commands
+namespace OpenExtensions.Core.Interfaces
 {
     /// <summary>
     /// A Generic <see cref="ICommand"/> to use with async
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IRelayCommandAsyncGeneric<T> : ICommand
+    public interface ICommandAsyncGeneric<T> : ICommand
     {
         /// <summary>
         /// 

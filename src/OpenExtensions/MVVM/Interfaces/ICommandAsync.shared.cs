@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace OpenExtensions.Core.Commands
+namespace OpenExtensions.Core.Interfaces
 {
     /// <summary>
     /// An <see cref="ICommand"/> to use with async
     /// </summary>
-    public interface IRelayCommandAsync : ICommand
+    public interface ICommandAsync : ICommand
     {
         /// <summary>
         /// 
