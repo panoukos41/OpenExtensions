@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Animation;
 
-namespace OpenExtensions.UWP
+namespace OpenExtensions.Uwp
 {
     /// <summary>
     /// Extension methods.
     /// </summary>
-    public static class Extensions
+    public static partial class Extensions
     {
         /// <summary>
         /// Method to await on a storyboard till it finishes.
