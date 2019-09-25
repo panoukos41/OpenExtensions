@@ -1,6 +1,4 @@
-﻿using GalaSoft.MvvmLight.Views;
-
-namespace OpenExtensions.Droid.FragmentNavigation
+﻿namespace OpenExtensions.MVVM.Views
 {
     /// <summary>
     /// A navigation service that's used as a fragment
@@ -13,11 +11,5 @@ namespace OpenExtensions.Droid.FragmentNavigation
         /// this is necessary since android seems to not update the fragment flag.
         /// </summary>
         bool IsCreated { get; }
-
-        /// <summary>
-        /// A bool indicatting if the service can go back.
-        /// </summary>
-        /// <returns></returns>
-        bool CanGoback();
     }
 }

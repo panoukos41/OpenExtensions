@@ -3,11 +3,12 @@ using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
 using OpenExtensions.Core.Services;
+using OpenExtensions.Droid.App;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenExtensions.Droid.FragmentNavigation
+namespace OpenExtensions.MVVM.Views
 {
     /// <summary>
     /// A navigation service placed in the UI as a fragment, 
@@ -40,7 +41,7 @@ namespace OpenExtensions.Droid.FragmentNavigation
         /// </summary>
         /// <param name="savedInstanceState"></param>
         public sealed override void OnCreate(Bundle savedInstanceState)
-        {            
+        {
             base.OnCreate(savedInstanceState);
             if (savedInstanceState != null)
             {
@@ -130,7 +131,7 @@ namespace OpenExtensions.Droid.FragmentNavigation
                     fragmentsByKey.Add(key, fragmentType);
                 }
             }
-            return this as FragmentNavigationService;
+            return this;
         }
 
         /// <summary>
@@ -138,21 +139,21 @@ namespace OpenExtensions.Droid.FragmentNavigation
         /// </summary>
         public void GoBack()
         {
-            if (!CanGoback())
+            if (!CanGoBack())
                 return;
 
             backStack.Pop();
 
             var frag = backStack.Peek();
             RaiseNavigated(new NavigationEventArgs(frag.GetType(), frag.Nav_parameter));
-            DisplayFragment(frag, true);            
+            DisplayFragment(frag, true);
         }
 
         /// <summary>
         /// Returns true if it's possible to go back, 
         /// the root fragment can't be removed and wont't be counted.
         /// </summary>
-        public bool CanGoback()
+        public bool CanGoBack()
         {
             return backStack.Count > 1;
         }
@@ -235,20 +236,23 @@ namespace OpenExtensions.Droid.FragmentNavigation
 
         private void DisplayFragment(Fragment fragment, bool backNavigation = false)
         {
-            var transaction = ChildFragmentManager
+            lock (fragmentsByKey)
+            {
+                var transaction = ChildFragmentManager
                 .BeginTransaction()
                 .DisallowAddToBackStack();
 
-            if (!backNavigation && EnterAnimation.HasValue && ExitAnimation.HasValue)
-                transaction.SetCustomAnimations(EnterAnimation.Value, ExitAnimation.Value);
-            else if (backNavigation && PopEnterAnimation.HasValue && PopExitAnimation.HasValue)
-                transaction.SetCustomAnimations(PopEnterAnimation.Value, PopExitAnimation.Value);
+                if (!backNavigation && EnterAnimation.HasValue && ExitAnimation.HasValue)
+                    transaction.SetCustomAnimations(EnterAnimation.Value, ExitAnimation.Value);
+                else if (backNavigation && PopEnterAnimation.HasValue && PopExitAnimation.HasValue)
+                    transaction.SetCustomAnimations(PopEnterAnimation.Value, PopExitAnimation.Value);
 
-            if (fragment.IsDetached)
-                transaction.Attach(fragment);
-            transaction
-                .Replace(FRAGMENT_CONTAINER_ID, fragment)
-                .CommitNow();
+                if (fragment.IsDetached)
+                    transaction.Attach(fragment);
+                transaction
+                    .Replace(FRAGMENT_CONTAINER_ID, fragment)
+                    .CommitNowAllowingStateLoss();
+            }            
         }
     }
 }

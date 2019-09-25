@@ -1,9 +1,10 @@
 ﻿using System;
 
-namespace OpenExtensions.Droid.FragmentNavigation
+namespace OpenExtensions.MVVM.Views
 {
     /// <summary>
-    /// Event arguments for the <see cref="FragmentNavigationService"/>
+    /// Event arguments for the a NavigationService. for example its used in the 
+    /// FramgmentNavigation service that misses navigated event.
     /// </summary>
     public class NavigationEventArgs : EventArgs
     {
@@ -12,7 +13,11 @@ namespace OpenExtensions.Droid.FragmentNavigation
         /// </summary>
         /// <param name="pageType"></param>
         /// <param name="parameter"></param>
-        public NavigationEventArgs(Type pageType, object parameter) => (PageType, Parameter) = (pageType, parameter);
+        public NavigationEventArgs(Type pageType, object parameter)
+        {
+            PageType = pageType;
+            Parameter = parameter;
+        }
 
         /// <summary>
         /// Type of the page.
