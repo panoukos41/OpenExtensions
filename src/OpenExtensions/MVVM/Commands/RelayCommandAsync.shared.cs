@@ -1,9 +1,8 @@
-﻿using OpenExtensions.Core.Interfaces;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace OpenExtensions.Core.Commands
+namespace OpenExtensions.MVVM.Commands
 {
     /// <summary>
     /// 
@@ -25,6 +24,17 @@ namespace OpenExtensions.Core.Commands
         /// <param name="execute"></param>
         /// <param name="canExecute"></param>
         public RelayCommandAsync(Func<Task> execute, Func<bool> canExecute = null)
+        {
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+
+        /// <summary>
+        /// Initialize a new instance of <see cref="RelayCommandAsync"/>
+        /// </summary>
+        /// <param name="execute"></param>
+        /// <param name="canExecute"></param>
+        public RelayCommandAsync(Func<bool> canExecute, Func<Task> execute)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -75,6 +85,32 @@ namespace OpenExtensions.Core.Commands
         async void ICommand.Execute(object parameter)
         {
             await ExecuteAsync();
+        }
+
+        /// <summary>
+        /// Returns the storage but if its null it initializes a new instance 
+        /// of the command, stores it in storage and returns it.
+        /// </summary>
+        /// <param name="storage">The backing storage of the command</param>
+        /// <param name="execute">The execute method</param>
+        /// <param name="canExecute">The can execute method</param>
+        /// <returns></returns>
+        public static RelayCommandAsync New(ref RelayCommandAsync storage, Func<Task> execute, Func<bool> canExecute = null)
+        {
+            return storage ?? (storage = new RelayCommandAsync(execute, canExecute));
+        }
+
+        /// <summary>
+        /// Returns the storage but if its null it initializes a new instance 
+        /// of the command, stores it in storage and returns it.
+        /// </summary>
+        /// <param name="storage">The backing storage of the command</param>
+        /// <param name="canExecute">The can execute method</param>
+        /// <param name="execute">The execute method</param>
+        /// <returns></returns>
+        public static RelayCommandAsync New(ref RelayCommandAsync storage, Func<bool> canExecute, Func<Task> execute)
+        {
+            return storage ?? (storage = new RelayCommandAsync(execute, canExecute));
         }
     }
 }

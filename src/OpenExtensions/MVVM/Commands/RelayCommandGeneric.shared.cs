@@ -1,5 +1,4 @@
-﻿using OpenExtensions.MVVM.Interfaces;
-using System;
+﻿using System;
 using System.Windows.Input;
 
 namespace OpenExtensions.MVVM.Commands
@@ -25,6 +24,17 @@ namespace OpenExtensions.MVVM.Commands
         /// <param name="execute"></param>
         /// <param name="canExecute"></param>
         public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
+        {
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+
+        /// <summary>
+        /// Initialize a new instance of <see cref="RelayCommand{T}"/>
+        /// </summary>
+        /// <param name="execute"></param>
+        /// <param name="canExecute"></param>
+        public RelayCommand(Func<T, bool> canExecute, Action<T> execute)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -76,6 +86,32 @@ namespace OpenExtensions.MVVM.Commands
         void ICommand.Execute(object parameter)
         {
             Execute((T)parameter);
+        }
+
+        /// <summary>
+        /// Returns the storage but if its null it initializes a new instance 
+        /// of the command, stores it in storage and returns it.
+        /// </summary>
+        /// <param name="storage">The backing storage of the command</param>
+        /// <param name="execute">The execute method</param>
+        /// <param name="canExecute">The can execute method</param>
+        /// <returns></returns>
+        public static RelayCommand<T> New(ref RelayCommand<T> storage, Action<T> execute, Func<T, bool> canExecute = null)
+        {
+            return storage ?? (storage = new RelayCommand<T>(execute, canExecute));
+        }
+
+        /// <summary>
+        /// Returns the storage but if its null it initializes a new instance 
+        /// of the command, stores it in storage and returns it.
+        /// </summary>
+        /// <param name="storage">The backing storage of the command</param>
+        /// <param name="canExecute">The can execute method</param>
+        /// <param name="execute">The execute method</param>
+        /// <returns></returns>
+        public static RelayCommand<T> New(ref RelayCommand<T> storage, Func<T, bool> canExecute, Action<T> execute)
+        {
+            return storage ?? (storage = new RelayCommand<T>(execute, canExecute));
         }
     }
 }

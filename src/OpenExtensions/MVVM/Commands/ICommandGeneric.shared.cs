@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace OpenExtensions.MVVM.Interfaces
+namespace OpenExtensions.MVVM.Commands
 {
     /// <summary>
     /// A Generic <see cref="ICommand"/>
