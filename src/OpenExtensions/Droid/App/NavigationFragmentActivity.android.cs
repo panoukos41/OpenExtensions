@@ -5,10 +5,9 @@ using Android.OS;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
-using GalaSoft.MvvmLight.Views;
 using OpenExtensions.Core.Services;
-using OpenExtensions.Droid.FragmentNavigation;
 using OpenExtensions.Droid.Services;
+using OpenExtensions.MVVM.Views;
 using System.Threading.Tasks;
 using Fragment = Android.Support.V4.App.Fragment;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
@@ -20,7 +19,7 @@ namespace OpenExtensions.Droid.App
     /// to handle the configuration changes for the navigation service"/>
     /// </summary>
     [Activity(ConfigurationChanges = ConfigChanges.Orientation)]
-    public abstract class FragmentNavigationActivity : AppCompatActivity
+    public abstract class NavigationFragmentActivity : AppCompatActivity
     {
         /// <summary>
         /// Your Toolbar
@@ -217,7 +216,7 @@ namespace OpenExtensions.Droid.App
                 Drawer.CloseDrawers();
                 e.Handled = true;
             }
-            else if (NavigationService != null && NavigationService.CanGoback())
+            else if (NavigationService != null && NavigationService.CanGoBack())
             {
                 NavigationService.GoBack();
                 e.Handled = true;
