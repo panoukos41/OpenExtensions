@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <!--Nuget Related Stuff-->
     <Authors>panoukos41</Authors>
     <PackageProjectUrl>https://github.com/panoukos41/OpenExtensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/panoukos41/OpenExtensions</RepositoryUrl>
@@ -9,9 +8,11 @@
     <PackageTags>Extensions</PackageTags>
     <Title>OpenExtensions</Title>
     <Summary>Extensions for your projects!</Summary>
-    <Description>The goal is like the name, to have a library containing extensions open for everyone to contribute and use. 
-1. Make extensions for everything C# to make our life easier from WPF, UWP to Android and IOS
-2. Everything from classes to extension methods, we should try and keep most of the classes seperated from each other and when possible to provide interfaces for anyone to build their own implementation if neccesary.</Description>
+    <Description>
+      The goal is like the name, to have a library containing extensions open for everyone to contribute and use.
+      1. Make extensions for everything C# to make our life easier from WPF, UWP to Android and IOS
+      2. Everything from classes to extension methods, we should try and keep most of the classes seperated from each other and when possible to provide interfaces for anyone to build their own implementation if neccesary.
+    </Description>
     <Owners>Panagiotis Athanasiou</Owners>
     <Copyright></Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -21,11 +22,40 @@
     <AssemblyVersion>$(Version)</AssemblyVersion>
 
     <!--Version of C# to use-->
-    <LangVersion>latest</LangVersion>
+    <LangVersion>7.3</LangVersion>
 
     <!--Helper to add defines-->
     <DefineConstants>$(DefineConstants);</DefineConstants>
   </PropertyGroup>
+  
+  <Import Project="Directory.nupkgLocation.props" />
+
+  <!-- Define what happens on build debug -->
+  <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- Define what happens on build release -->
+  <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
+    <DebugType>pdbonly</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- sourcelink: Embed source files that are not tracked by the source control manager to the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- sourcelink: Include PDB in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Android DesignTimeBuild error workaround">
+    <DesignTimeBuild>false</DesignTimeBuild>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(Configuration)'=='Release' And '$(OS)' == 'Windows_NT' ">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+  </ItemGroup>
 
   <!--Include versioning package on all projects-->
   <ItemGroup>

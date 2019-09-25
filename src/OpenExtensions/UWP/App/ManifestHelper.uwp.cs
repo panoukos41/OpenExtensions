@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace OpenExtensions.UWP.App
+namespace OpenExtensions.Uwp.App
 {
     /// <summary>
     /// This helper class loads the AppManifest in memory, letting you obtain properties that are not exposed through the Windows Store API.

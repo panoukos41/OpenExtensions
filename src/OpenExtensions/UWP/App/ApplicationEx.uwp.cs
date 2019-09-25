@@ -1,7 +1,6 @@
-﻿using GalaSoft.MvvmLight.Views;
-using OpenExtensions.Core.Services;
-using OpenExtensions.UWP.Navigation;
-using OpenExtensions.UWP.Services;
+﻿using OpenExtensions.Core.Services;
+using OpenExtensions.MVVM.Views;
+using OpenExtensions.Uwp.Services;
 using System;
 using System.IO;
 using System.Runtime.Serialization;
@@ -15,7 +14,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace OpenExtensions.UWP.App
+namespace OpenExtensions.Uwp.App
 {
     /// <summary>
     /// Provides the base class for your Universal Windows Platform application.
@@ -94,10 +93,21 @@ namespace OpenExtensions.UWP.App
         }
 
         /// <summary>
-        /// This is called whenever the app is launched normally, navigate to the application's home page.
+        /// Called whenever the app is launched normally meaning <see cref="ActivationKind"/>
+        /// is <see cref="ActivationKind.Launch"/> with <see cref="ApplicationExecutionState"/> 
+        /// equal to <see cref="ApplicationExecutionState.Suspended"/>
         /// </summary>
         /// <param name="args">The <see cref="LaunchActivatedEventArgs"/> instance containing the event data.</param>
         protected abstract Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args);
+
+        /// <summary>
+        /// Called everytime a secondery tile is pressed, if this launches the application
+        /// <see cref="OnLaunchApplicationAsync(LaunchActivatedEventArgs)"/> will be called first.
+        /// this doesn't check if <see cref="ActivationKind"/> is <see cref="ActivationKind.Launch"/> 
+        /// with <see cref="ApplicationExecutionState"/> equal to <see cref="ApplicationExecutionState.Suspended"/>
+        /// </summary>
+        /// <param name="args"></param>
+        protected virtual Task OnSeconderyLaunchAsync(LaunchActivatedEventArgs args) => Task.CompletedTask;
 
         /// <summary>
         /// This is called when application is activated through other means than a normal launch 
@@ -143,10 +153,10 @@ namespace OpenExtensions.UWP.App
 
         /// <summary>
         /// Creates the navigation service, use this to create your own <see cref="INavigationService"/> implementation.
-        /// Default is <see cref="NavigationServiceEx"/>
+        /// Default is <see cref="NavigationService"/>
         /// </summary>
         /// <param name="rootFrame">The root frame.</param>
-        protected virtual INavigationService OnCreateNavigationService(Frame rootFrame) => new NavigationServiceEx(rootFrame);
+        protected virtual INavigationService OnCreateNavigationService(Frame rootFrame) => new NavigationService(rootFrame);
 
         /// <summary>
         /// Creates the device gesture service. Use this to inject your own IDeviceGestureService implementation.
@@ -182,17 +192,30 @@ namespace OpenExtensions.UWP.App
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             await InitializeShell(args);
-
+            
             // If the app is launched via the app's primary tile, the args.TileId property
-            // will have the same value as the AppUserModelId, which is set in the Package.appxmanifest.
-            // See http://go.microsoft.com/fwlink/?LinkID=288842
-            string tileId = ManifestHelper.GetApplicationId();
+            // will have the value "App" if a secondery tile is used it will have the id of the secondery tile.
+            // link https://docs.microsoft.com/en-us/uwp/api/windows.applicationmodel.activation.launchactivatedeventargs.tileid
+            //string TileId = args.TileId;
 
-            if (Window.Current.Content != null && (!_isRestoringFromTermination || (args != null && args.TileId != tileId)))
+            bool ContentNotNull = Window.Current.Content != null;
+
+            if (ContentNotNull && !_isRestoringFromTermination && 
+                args.TileId == "App" &&
+                args.Kind == ActivationKind.Launch && 
+                args.PreviousExecutionState != ApplicationExecutionState.Suspended)
             {
                 await OnLaunchApplicationAsync(args);
             }
-            else if (Window.Current.Content != null && _isRestoringFromTermination)
+            else if (ContentNotNull && !_isRestoringFromTermination && args.TileId != "App")
+            {
+                if (args.Kind == ActivationKind.Launch && args.PreviousExecutionState != ApplicationExecutionState.Suspended)
+                {
+                    await OnLaunchApplicationAsync(args);
+                }
+                await OnSeconderyLaunchAsync(args);
+            }
+            else if (ContentNotNull && _isRestoringFromTermination)
             {
                 await OnResumeApplicationAsync(args);
             }
