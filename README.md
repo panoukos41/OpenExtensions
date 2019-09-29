@@ -3,13 +3,25 @@
 The goal is like the name, to have a library containing extensions open for everyone to contribute and use.
 Make extensions for everything C# to make our life easier from WPF, UWP to Android, IOS, .Net Standard and .Net Core.
 
-Nuget Packages:
+| Platform | Assemnly                | Nuget |
+| -------- | ----------------------- | ----- |
+| ALL      | OpenExtensions          | [![NuGet Package Icon](https://img.shields.io/nuget/v/OpenExtensions.svg)](https://www.nuget.org/packages/OpenExtensions) |
+| UWP      | OpenExtensions.Uwp.UI   | [![NuGet Package Icon](https://img.shields.io/nuget/v/OpenExtensions.Uwp.UI)](https://www.nuget.org/packages/OpenExtensions.Uwp.UI) |
+| Android  | OpenExtensions.Droid.UI | Coming soon! |
 
-[![NuGet Package Icon](https://img.shields.io/nuget/v/OpenExtensions.svg)](https://www.nuget.org/packages/OpenExtensions)
+# Getting Started
 
-***Things to start with***
-1. Tests need to be made, i am not really familiar with testing in a library and any knowledge and guidance is appreciated.
-2. Samples.
+To get started you will need:
+
+1. Visual Studio 2019 version 16.3+
+2. .Net Core 3.x
+3. C# 7.3 (8 in the long future)
+
+Compile and you should be ready to add your extensions, look into Contributing to see how extensions should be added.
+
+***Things to consider starting with***
+- Tests, i am not really familiar with testing in a library and any knowledge and guidance is appreciated.
+- Samples.
 
 # Contributing
 Feedback and contributions are welcomed!
