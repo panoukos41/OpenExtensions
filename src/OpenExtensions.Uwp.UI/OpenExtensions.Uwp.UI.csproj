@@ -2,40 +2,36 @@
 <Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
     <TargetFramework>uap10.0.14393</TargetFramework>
+    
     <RootNamespace>OpenExtensions.Uwp.UI</RootNamespace>
     <AssemblyName>OpenExtensions.Uwp.UI</AssemblyName>
 
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
 
-    <!--<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>-->
+    <!--Adds xaml files into the nuget package-->
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
   </PropertyGroup>
 
-  <!-- Define what happens on build debug -->
-  <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
-  </PropertyGroup>
-  
-  <!-- Define what happens on build release -->
-  <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
-    <DebugType>pdbonly</DebugType>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
+  <!--Readme.txt-->
   <ItemGroup>
-    <Resource Include="**\*.xaml" Exclude="obj\**\*.*;bin\**\*.*;bin;obj" />
+    <None Include="nugetreadme.txt" PackagePath="Readme.txt" Pack="true" />
+  </ItemGroup>
+  
+  <!--Compile xaml files.-->
+  <ItemGroup>
+    <Page Include="**\*.xaml" Exclude="obj\**\*.*;bin\**\*.*;bin;obj">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Resource Include="**\*.xaml" Exclude="obj\**\*.*;bin\**\*.*;bin;obj">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Themes\ModalDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Themes\SearchToolbar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
+    <None Include="ModalDialogs" />
   </ItemGroup>
   
 </Project>
