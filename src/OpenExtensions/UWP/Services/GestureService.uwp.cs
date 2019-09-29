@@ -2,23 +2,26 @@
 using System;
 using Windows.Devices.Input;
 using Windows.Foundation.Metadata;
-using Windows.Phone.UI.Input;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
-namespace OpenExtensions.UWP.Services
+namespace OpenExtensions.Uwp.Services
 {
     /// <summary>
     /// The DeviceGestureService class is used for handling mouse, 
-    /// keyboard, hardware button and other gesture events.
+    /// keyboard and other gesture events.
     /// </summary>
     public class GestureService : IGestureService, IDisposable
     {
+        /// <summary></summary>
         public bool IsHardwareBackButtonPresent { get; private set; }
+        /// <summary></summary>
         public bool IsHardwareCameraButtonPresent { get; private set; }
-
+        /// <summary></summary>
         public bool IsKeyboardPresent { get; private set; }
+        /// <summary></summary>
         public bool IsMousePresent { get; private set; }
+        /// <summary></summary>
         public bool IsTouchPresent { get; private set; }
 
         /// <summary>
@@ -27,7 +30,6 @@ namespace OpenExtensions.UWP.Services
         public GestureService()
         {
             IsHardwareBackButtonPresent = ApiInformation.IsEventPresent("Windows.Phone.UI.Input.HardwareButtons", "BackPressed");
-            IsHardwareCameraButtonPresent = ApiInformation.IsEventPresent("Windows.Phone.UI.Input.HardwareButtons", "CameraPressed");
 
             IsKeyboardPresent = new KeyboardCapabilities().KeyboardPresent != 0;
             IsMousePresent = new MouseCapabilities().MousePresent != 0;
@@ -37,13 +39,6 @@ namespace OpenExtensions.UWP.Services
             if (IsHardwareBackButtonPresent)
                 HardwareButtons.BackPressed += OnHardwareButtonsBackPressed;
 #endif // WINDOWS_PHONE_APP
-
-            if (IsHardwareCameraButtonPresent)
-            {
-                HardwareButtons.CameraHalfPressed += OnHardwareButtonCameraHalfPressed;
-                HardwareButtons.CameraPressed += OnHardwareButtonCameraPressed;
-                HardwareButtons.CameraReleased += OnHardwareButtonCameraReleased;
-            }
 
             if (IsMousePresent)
                 MouseDevice.GetForCurrentView().MouseMoved += OnMouseMoved;
@@ -64,9 +59,7 @@ namespace OpenExtensions.UWP.Services
         /// so that handlers added by the users are invoked before handlers in the system.
         /// </summary>
         public event EventHandler<GestureEventArgs> GoForwardRequested;
-        public event EventHandler<GestureEventArgs> CameraButtonHalfPressed;
-        public event EventHandler<GestureEventArgs> CameraButtonPressed;
-        public event EventHandler<GestureEventArgs> CameraButtonReleased;
+        /// <summary></summary>
         public event EventHandler<MouseEventArgs> MouseMoved;
 
         /// <summary>
@@ -174,36 +167,6 @@ namespace OpenExtensions.UWP.Services
                 if (forwardPressed)
                     RaiseGoForwardRequested();
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void OnHardwareButtonCameraHalfPressed(object sender, CameraEventArgs e)
-        {
-            Core.Extensions.RaiseEvent(CameraButtonHalfPressed, this, new GestureEventArgs(false, true));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void OnHardwareButtonCameraPressed(object sender, CameraEventArgs e)
-        {
-            Core.Extensions.RaiseEvent(CameraButtonPressed, this, new GestureEventArgs(false, true));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void OnHardwareButtonCameraReleased(object sender, CameraEventArgs e)
-        {
-            Core.Extensions.RaiseEvent(CameraButtonReleased, this, new GestureEventArgs(false, true));
         }
     }
 }

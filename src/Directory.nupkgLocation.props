@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup Condition=" '$(Configuration)'=='Release'">
+
+    <!--Uncomment the line below and set your own path to set the
+        destination folder of all nuget packages generated on release.-->
+
+    <!--<PackageOutputPath>C:\Users\Public\Documents</PackageOutputPath>-->
+  </PropertyGroup>
+</Project>
