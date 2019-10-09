@@ -1,0 +1,1 @@
+﻿Thanks for installing OpenExtansions.Droid.UI!
