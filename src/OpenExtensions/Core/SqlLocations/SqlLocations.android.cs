@@ -7,6 +7,6 @@ namespace OpenExtensions.Core
         /// <summary>
         /// 
         /// </summary>
-        static string PlatformPath => System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "database.db3");
+        static string PlatformPath => Environment.GetFolderPath(Environment.SpecialFolder.Personal);
     }
 }

@@ -7,6 +7,6 @@ namespace OpenExtensions.Core
         /// <summary>
         /// 
         /// </summary>
-        static string PlatformPath => System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, "db.sqlite");
+        static string PlatformPath => ApplicationData.Current.LocalFolder.Path;
     }
 }
