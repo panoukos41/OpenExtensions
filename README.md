@@ -17,14 +17,15 @@ To get started you will need:
 2. .Net Core 3.x
 3. C# 7.3 (8 in the long future)
 
-Compile and you should be ready to add your extensions, look into Contributing to see how extensions should be added.
+Compile and you should be ready to add your extensions, look into Contributing to see how extensions should be added.  
+If you are unsure on how to implement your extension there is no problem just open an issue or email me and i will do my best to help ^^ !!!
 
 ***Things to consider starting with***
 - Tests, i am not really familiar with testing in a library and any knowledge and guidance is appreciated.
 - Samples.
 
 # Contributing
-Feedback and contributions are welcomed!
+Feedback and contributions are welcome!
 
 For information on how to contribute please see [Contributing to OpenExtensions](https://github.com/panoukos41/OpenExtensions/blob/master/CONTRIBUTING.md)
 
