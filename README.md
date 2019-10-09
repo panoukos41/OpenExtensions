@@ -5,9 +5,9 @@ Make extensions for everything C# to make our life easier from WPF, UWP to Andro
 
 | Platform | Assemnly                | Nuget |
 | -------- | ----------------------- | ----- |
-| ALL      | OpenExtensions          | [![NuGet Package Icon](https://img.shields.io/nuget/v/OpenExtensions.svg)](https://www.nuget.org/packages/OpenExtensions) |
+| ALL      | OpenExtensions          | [![NuGet Package Icon](https://img.shields.io/nuget/v/OpenExtensions)](https://www.nuget.org/packages/OpenExtensions) |
 | UWP      | OpenExtensions.Uwp.UI   | [![NuGet Package Icon](https://img.shields.io/nuget/v/OpenExtensions.Uwp.UI)](https://www.nuget.org/packages/OpenExtensions.Uwp.UI) |
-| Android  | OpenExtensions.Droid.UI | Coming soon! |
+| Android  | OpenExtensions.Droid.UI | [![NuGet Package Icon](https://img.shields.io/nuget/v/OpenExtensions.Droid.UI)](https://www.nuget.org/packages/OpenExtensions.Droid.UI) |
 
 # Getting Started
 
