@@ -4,7 +4,7 @@
     <Authors>panoukos41</Authors>
     <PackageProjectUrl>https://github.com/panoukos41/OpenExtensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/panoukos41/OpenExtensions</RepositoryUrl>
-    <PackageIconUrl></PackageIconUrl>
+    <PackageIcon></PackageIcon>
     <PackageTags>Extensions</PackageTags>
     <Title>OpenExtensions</Title>
     <Summary>Extensions for your projects!</Summary>
