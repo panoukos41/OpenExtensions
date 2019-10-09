@@ -1,40 +1,28 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.4;netstandard2.0;MonoAndroid80;MonoAndroid81;uap10.0.14393;</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.4;netstandard2.0;MonoAndroid80;MonoAndroid81;</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.4;netstandard2.0;MonoAndroid80;MonoAndroid81;MonoAndroid90;uap10.0.14393;</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.4;netstandard2.0;MonoAndroid80;MonoAndroid81;MonoAndroid90;</TargetFrameworks>
 
     <!--Assembly and Namespace info -->
     <AssemblyName>OpenExtensions</AssemblyName>
     <RootNamespace>OpenExtensions</RootNamespace>
     
-    <!--I add what i want-->    
+    <!--I add what i want-->
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <AndroidUseManagedDesignTimeResourceGenerator>false</AndroidUseManagedDesignTimeResourceGenerator>
   </PropertyGroup>
 
-  <!-- Define what happens on build debug -->
-  <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
-  </PropertyGroup>
-  
-  <!-- Define what happens on build release -->
-  <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
-    <DebugType>pdbonly</DebugType>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Label="Android DesignTimeBuild error workaround">
-    <DesignTimeBuild>false</DesignTimeBuild>
-  </PropertyGroup>
+  <!--Readme.txt-->
+  <ItemGroup>
+    <None Include="nugetreadme.txt" PackagePath="Readme.txt" Pack="true" />
+  </ItemGroup>
 
   <!--Group to include everything shared and compile it-->
   <ItemGroup>
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    
     <!--Ignore certain files from explorer-->
     <None Include="**\*.cs;**\*.xml;**\*.axml;**\*.png;" Exclude="obj\**\*.*;bin\**\*.*;bin;obj" />
     <Compile Include="**\*.shared.cs" />
@@ -56,16 +44,13 @@
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Compile Include="**\*.android.cs" />
     <Compile Include="**\*.android.*.cs" />
-    
+
     <AndroidResource Include="Resources\**\*.xml" />
     <AndroidResource Include="Resources\**\*.axml" />    
-    <AndroidResource Include="Resources\**\*.png" />    
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors" />    
-    <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.1" />
+    <AndroidResource Include="Resources\**\*.png" />
+
+    <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
   </ItemGroup>
   
   <!--Compile everything for UWP-->
