@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using SearchView = Android.Support.V7.Widget.SearchView;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
-namespace OpenExtensions.Droid.UI
+namespace OpenExtensions.Droid.UI.Controls
 {
     /// <summary>
     /// A toolbar with search. Use <see cref="OnCreateOptionsMenu(MenuInflater, IMenu)"/>
